@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp × Degree Sales — DoubleTick Integration Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F7F2E6;--cream-2:#FBF8EF;--paper:#FFFFFF;
+    --ink:#16231E;--ink-soft:#3A4742;--muted:#6E7B74;--line:#E2DAC8;
+    --green:#0A6B4E;--green-deep:#074A36;--green-bright:#1AA06A;--wa:#25A55E;
+    --amber:#C9892F;--red:#C25434;--chip:#EDE6D4;
+    --shadow:0 1px 2px rgba(7,74,54,.04),0 14px 34px -20px rgba(7,74,54,.28);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);color:var(--ink);font-family:'Hanken Grotesk',sans-serif;line-height:1.62;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 12% -8%,rgba(26,160,106,.07),transparent 42%),radial-gradient(circle at 94% 6%,rgba(10,107,78,.06),transparent 40%);background-attachment:fixed;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 30px}
+
+  /* header */
+  header{padding:74px 0 34px}
+  .brandrow{display:flex;align-items:center;gap:12px;margin-bottom:36px;opacity:0;animation:fade .7s .05s forwards}
+  .ticks{display:inline-flex;color:var(--green-bright);font-size:18px;letter-spacing:-4px}
+  .brandrow .nm{font-weight:700;font-size:15px}
+  .brandrow .sep{width:1px;height:16px;background:var(--line)}
+  .brandrow .meta{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.16em}
+  .poc{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#EAF7F0;font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:7px 14px;border-radius:100px;opacity:0;animation:fade .7s .12s forwards}
+  .poc::before{content:"";width:6px;height:6px;border-radius:50%;background:#9BE8C5;box-shadow:0 0 0 3px rgba(155,232,197,.25)}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(38px,6vw,70px);line-height:1.02;letter-spacing:-.02em;margin:22px 0 0;opacity:0;animation:fade .8s .18s forwards}
+  h1 .amp{color:var(--green-bright);font-style:italic;font-weight:500}
+  .sub{font-size:18px;color:var(--ink-soft);max-width:680px;margin-top:22px;opacity:0;animation:fade .8s .26s forwards}
+  .sub b{color:var(--green-deep);font-weight:600}
+  .rule{height:1px;background:linear-gradient(90deg,var(--line),transparent);margin:46px 0 0}
+  .toc{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:32px 0 10px;opacity:0;animation:fade .8s .34s forwards}
+  .toc a{text-decoration:none;color:var(--ink);background:var(--cream-2);border:1px solid var(--line);border-radius:14px;padding:15px 17px;display:block;transition:.25s}
+  .toc a:hover{transform:translateY(-3px);border-color:var(--green-bright);box-shadow:var(--shadow)}
+  .toc .n{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green-bright);font-weight:600}
+  .toc .t{font-weight:600;font-size:14.5px;margin-top:6px;letter-spacing:-.01em}
+  .toc .d{font-size:12px;color:var(--muted);margin-top:3px}
+
+  /* sections */
+  section{padding:66px 0 8px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--green-bright);display:flex;align-items:center;gap:12px}
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--green-bright)}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(28px,4vw,42px);letter-spacing:-.02em;line-height:1.08;margin:14px 0 16px}
+  .lead{font-size:16.5px;color:var(--ink-soft);max-width:720px;margin-bottom:30px}
+
+  /* figure */
+  .figure{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:30px 30px 24px;box-shadow:var(--shadow);margin:8px 0 26px}
+  .figure svg{display:block;width:100%;height:auto}
+  .fig-cap{font-size:13px;color:var(--muted);margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);display:flex;gap:8px}
+  .fig-cap b{color:var(--green-deep);font-weight:600}
+  .fig-title{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green-bright);margin-bottom:18px;font-weight:600}
+
+  /* feature block */
+  .feat{margin:0 0 8px}
+  .feat .ftitle{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  .feat .ftitle .ic{width:42px;height:42px;border-radius:12px;background:var(--green);display:flex;align-items:center;justify-content:center;flex:none}
+  .feat .ftitle .ic svg{width:22px;height:22px;stroke:#EAF7F0;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .feat h3{font-family:'Fraunces',serif;font-weight:600;font-size:25px;letter-spacing:-.01em}
+  .feat>p{font-size:16px;color:var(--ink-soft);max-width:740px;margin-bottom:18px}
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--chip);color:var(--green-deep);padding:5px 11px;border-radius:7px;font-weight:500}
+
+  code,.mono{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--chip);color:var(--green-deep);padding:2px 7px;border-radius:6px}
+
+  /* cards */
+  .stack{display:flex;flex-direction:column;gap:14px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(var(--green-bright),var(--green))}
+  .card h4{font-family:'Fraunces',serif;font-weight:600;font-size:19px;letter-spacing:-.01em;margin-bottom:6px;display:flex;align-items:center;gap:11px}
+  .badge-num{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--chip);color:var(--green-deep);width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:600;flex:none}
+  .card p{color:var(--ink-soft);font-size:14.5px}
+  .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--chip);color:var(--green-deep);padding:2px 8px;border-radius:6px;font-weight:500}
+
+  /* also included */
+  .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+  .mini .m{background:var(--cream-2);border:1px solid var(--line);border-radius:14px;padding:18px 18px}
+  .mini .m .ic{width:34px;height:34px;border-radius:10px;background:var(--green);display:flex;align-items:center;justify-content:center;margin-bottom:11px}
+  .mini .m .ic svg{width:18px;height:18px;stroke:#EAF7F0;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .mini .m h4{font-size:15px;font-weight:600;margin-bottom:4px}
+  .mini .m p{font-size:13px;color:var(--muted)}
+
+  /* crm flow */
+  .flowhead{display:flex;align-items:baseline;gap:14px;margin:40px 0 4px}
+  .trigger{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;background:var(--green-deep);color:#CFEEE0;padding:5px 12px;border-radius:8px;letter-spacing:.04em}
+  .flowhead h3{font-family:'Fraunces',serif;font-size:24px;font-weight:600;letter-spacing:-.01em}
+  .flowhead p{color:var(--muted);font-size:14px;margin-top:2px}
+  .flow{position:relative;margin:22px 0 8px;padding-left:34px}
+  .flow::before{content:"";position:absolute;left:14px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--green-bright),var(--line))}
+  .step{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:17px 22px;margin-bottom:13px;box-shadow:var(--shadow)}
+  .step::before{content:attr(data-n);position:absolute;left:-34px;top:17px;width:28px;height:28px;border-radius:50%;background:var(--green);color:#EAF7F0;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px var(--cream)}
+  .step h5{font-size:15.5px;font-weight:600;letter-spacing:-.01em;margin-bottom:5px}
+  .step p{font-size:14px;color:var(--ink-soft)}
+  .step .resolve{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-size:12.5px;font-weight:600;color:var(--green-bright)}
+  .step .resolve::before{content:"✓";font-size:11px;width:18px;height:18px;border-radius:50%;background:rgba(26,160,106,.14);display:inline-flex;align-items:center;justify-content:center}
+
+  /* callout */
+  .callout{background:linear-gradient(180deg,#FFF9EC,#FDF3DD);border:1px solid #EAD9AE;border-left:4px solid var(--amber);border-radius:14px;padding:18px 22px;margin:18px 0 6px}
+  .callout h5{font-size:14px;font-weight:700;color:#8A5A14;display:flex;align-items:center;gap:9px;margin-bottom:5px}
+  .callout p{font-size:14px;color:#6E561F}
+  .rec{background:linear-gradient(180deg,#ECF7F0,#E2F2E9);border:1px solid #BFE1CE;border-left:4px solid var(--green-bright);border-radius:14px;padding:20px 24px;margin:18px 0 6px}
+  .rec h5{font-size:14px;font-weight:700;color:var(--green-deep);display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  .rec p{font-size:14.5px;color:#2E5244}
+  .rec p+p{margin-top:8px}
+
+  /* footer */
+  footer{margin-top:72px;padding:46px 0 66px;border-top:1px solid var(--line)}
+  .nextgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px}
+  .next{background:var(--cream-2);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .next .n{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green-bright)}
+  .next h4{font-size:15px;font-weight:600;margin-top:6px}
+  .next p{font-size:13px;color:var(--muted);margin-top:4px}
+  .sign{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:13px}
+
+  /* svg text */
+  svg text{font-family:'Hanken Grotesk',sans-serif}
+  .svg-mono{font-family:'JetBrains Mono',monospace}
+
+  @keyframes fade{to{opacity:1;transform:none}}
+  [data-rise]{opacity:0;transform:translateY(16px)}
+  [data-rise].in{animation:fade .7s forwards}
+
+  @media(max-width:780px){
+    .toc,.mini,.nextgrid,.two{grid-template-columns:1fr}
+    header{padding:48px 0 22px}
+    .wrap{padding:0 20px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>WhatsApp <span class="amp">&times;</span> Degree Sales</h1>
+    <p class="sub">A plan to connect our <b>WABA accounts</b> to our CRM through <b>DoubleTick</b> — a managed WhatsApp identity for every Learning Consultant, AI-driven qualification and follow-up, full lifecycle continuity, and two-way sync between the chat layer and our opportunity records.</p>
+    <div class="rule"></div>
+    <nav class="toc">
+      <a href="#moat"><div class="n">01</div><div class="t">The Opportunity Model</div><div class="d">Our moat: one student, many opps</div></a>
+      <a href="#foundation"><div class="n">02</div><div class="t">Foundation</div><div class="d">Connect &amp; govern WABA</div></a>
+      <a href="#intel"><div class="n">03</div><div class="t">Intelligent Conversations</div><div class="d">AI bot · follow-ups · scoring</div></a>
+      <a href="#omni"><div class="n">04</div><div class="t">Omnichannel AI</div><div class="d">Voice × WhatsApp, one brain</div></a>
+      <a href="#lifecycle"><div class="n">05</div><div class="t">Lifecycle &amp; Continuity</div><div class="d">Post-sales · offboarding · sync</div></a>
+      <a href="#crm"><div class="n">06</div><div class="t">CRM Integration</div><div class="d">Opp create &amp; update triggers</div></a>
+    </nav>
+  </header>
+
+  <!-- ============ 01 THE OPPORTUNITY MODEL ============ -->
+  <section id="moat">
+    <div class="eyebrow">Phase 01 — The Opportunity Model</div>
+    <h2>Our moat: one student, many opportunities</h2>
+    <p class="lead">A prospective student is never just one lead for one course. Over a few weeks we approach the same person about several universities — Manipal, then Shoolini, and more. The decision that defines our degree sales is treating that person as <strong>one contact with many opportunities</strong>, not a fresh lead each time. It is what lets us nurture across programs, keep every past conversation, and never double-message — and the entire WhatsApp integration is built to protect it.</p>
+
+    <figure class="figure" data-rise>
+      <div class="fig-title">The idea in one picture</div>
+      <svg viewBox="0 0 1000 286" role="img" aria-label="One student, many opportunities">
+        <defs><marker id="ma" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker></defs>
+        <!-- student -->
+        <circle cx="92" cy="120" r="40" fill="#0A6B4E"/><text x="92" y="132" text-anchor="middle" font-size="32" fill="#fff">🎓</text>
+        <text x="92" y="184" text-anchor="middle" font-size="14" font-weight="600" fill="#16231E">One student</text>
+        <text x="92" y="202" text-anchor="middle" font-size="11.5" fill="#6E7B74">one phone number</text>
+
+        <!-- approached for (timeline) -->
+        <text x="232" y="48" class="svg-mono" font-size="11" letter-spacing="1.5" fill="#1AA06A" font-weight="600">APPROACHED FOR, OVER TIME</text>
+        <path d="M152 120 H224" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ma)"/>
+        <rect x="232" y="64" width="250" height="40" rx="11" fill="#EAF6EF" stroke="#B8DEC8"/><text x="252" y="82" font-size="13" font-weight="600" fill="#0A6B4E">Manipal University</text><text x="252" y="98" font-size="11" fill="#3A6A55">Week 1</text>
+        <rect x="232" y="110" width="250" height="40" rx="11" fill="#EAF6EF" stroke="#B8DEC8"/><text x="252" y="128" font-size="13" font-weight="600" fill="#0A6B4E">Shoolini University</text><text x="252" y="144" font-size="11" fill="#3A6A55">Week 3</text>
+        <rect x="232" y="156" width="250" height="40" rx="11" fill="#FBF8EF" stroke="#E2DAC8"/><text x="252" y="174" font-size="13" font-weight="600" fill="#16231E">+ more programs</text><text x="252" y="190" font-size="11" fill="#6E7B74">as interest grows</text>
+
+        <!-- arrow to CRM -->
+        <path d="M488 130 H548" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ma)"/>
+
+        <!-- CRM contact card -->
+        <rect x="556" y="44" width="420" height="172" rx="16" fill="#fff" stroke="#E2DAC8"/>
+        <text x="578" y="74" font-size="15" font-weight="700" fill="#16231E">= 1 CRM contact</text>
+        <text x="744" y="74" font-size="12.5" fill="#1AA06A" font-weight="600">many opportunities</text>
+        <line x1="578" y1="86" x2="954" y2="86" stroke="#E2DAC8"/>
+        <rect x="578" y="98" width="376" height="32" rx="8" fill="#FBF8EF" stroke="#E2DAC8"/><text x="594" y="118" font-size="12" fill="#3A4742"><tspan font-weight="600" fill="#16231E">Opp · Manipal</tspan>  —  stage: nurturing · owner LC-A</text>
+        <rect x="578" y="134" width="376" height="32" rx="8" fill="#FBF8EF" stroke="#E2DAC8"/><text x="594" y="154" font-size="12" fill="#3A4742"><tspan font-weight="600" fill="#16231E">Opp · Shoolini</tspan>  —  stage: new · owner LC-B</text>
+        <text x="578" y="190" font-size="12" fill="#0A6B4E" font-weight="600">↳ one shared history · each opp keeps its own stage &amp; owner</text>
+        <text x="556" y="246" font-size="12.5" fill="#6E7B74">Competitors restart from scratch for every program. We don't lose the person — that continuity is the moat.</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Why it matters:</b> the integration has to honour this on WhatsApp — where one person is one phone number, and therefore one chat.</figcaption>
+    </figure>
+
+    <p class="lead" style="margin-top:30px">That raises one practical question: if a person is a single phone number — and so a single WhatsApp chat — how do many opportunities live on it? There are two ways, and they trade different problems against each other.</p>
+
+    <figure class="figure" data-rise>
+      <div class="fig-title">Two ways to put many opportunities on WhatsApp</div>
+      <svg viewBox="0 0 1000 396" role="img" aria-label="Shared thread versus WABA per program">
+        <defs><marker id="we" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#0A6B4E"/></marker></defs>
+        <line x1="500" y1="26" x2="500" y2="372" stroke="#E2DAC8" stroke-dasharray="4 5"/>
+
+        <!-- MODEL A -->
+        <text x="40" y="40" class="svg-mono" font-size="11.5" letter-spacing="1.5" fill="#1AA06A" font-weight="600">MODEL A · KEEP IT IN ONE CHAT</text>
+        <rect x="170" y="54" width="160" height="36" rx="10" fill="#F1EEE6" stroke="#DAD2C0"/><text x="250" y="77" text-anchor="middle" font-size="12.5" fill="#16231E">Student · one phone</text>
+        <path d="M250 90 V106" stroke="#0A6B4E" stroke-width="1.5" marker-end="url(#we)"/>
+        <rect x="120" y="108" width="260" height="38" rx="10" fill="#EAF6EF" stroke="#B8DEC8"/><circle cx="146" cy="127" r="11" fill="#25A55E"/><text x="146" y="131" text-anchor="middle" font-size="11" fill="#fff">✓</text><text x="166" y="131" font-size="12.5" font-weight="600" fill="#0A6B4E">Counselling by HeroEd · 1 number</text>
+        <path d="M250 146 V162" stroke="#0A6B4E" stroke-width="1.5" marker-end="url(#we)"/>
+        <rect x="160" y="164" width="180" height="32" rx="9" fill="#fff" stroke="#E2DAC8"/><text x="250" y="184" text-anchor="middle" font-size="12.5" fill="#16231E">One WhatsApp chat</text>
+        <path d="M250 196 V212" stroke="#0A6B4E" stroke-width="1.5" marker-end="url(#we)"/>
+        <rect x="60" y="214" width="380" height="116" rx="13" fill="#FBF8EF" stroke="#E2DAC8"/>
+        <text x="80" y="238" font-size="12.5" font-weight="700" fill="#16231E">CRM · one contact</text>
+        <rect x="80" y="248" width="340" height="26" rx="7" fill="#fff" stroke="#E2DAC8"/><text x="94" y="265" font-size="11.5" fill="#3A4742">Opp 1 · Manipal — owner LC-A</text>
+        <rect x="80" y="278" width="340" height="26" rx="7" fill="#fff" stroke="#E2DAC8"/><text x="94" y="295" font-size="11.5" fill="#3A4742">Opp 2 · Shoolini — owner LC-B</text>
+        <text x="80" y="322" font-size="11.5" font-weight="600" fill="#0A6B4E">⇒ one chat owner, chosen by the CRM</text>
+        <rect x="60" y="344" width="380" height="34" rx="9" fill="#FBEFE9" stroke="#E7C3B4"/><text x="80" y="365" font-size="11.5" fill="#9B5740">Catch: a reply must be matched to the right opportunity</text>
+
+        <!-- MODEL B -->
+        <text x="540" y="40" class="svg-mono" font-size="11.5" letter-spacing="1.5" fill="#1AA06A" font-weight="600">MODEL B · A NUMBER PER UNIVERSITY</text>
+        <rect x="670" y="54" width="160" height="36" rx="10" fill="#F1EEE6" stroke="#DAD2C0"/><text x="750" y="77" text-anchor="middle" font-size="12.5" fill="#16231E">Student · one phone</text>
+        <path d="M750 90 C700 96 660 100 632 106" stroke="#0A6B4E" stroke-width="1.5" fill="none" marker-end="url(#we)"/>
+        <path d="M750 90 C800 96 840 100 868 106" stroke="#0A6B4E" stroke-width="1.5" fill="none" marker-end="url(#we)"/>
+        <rect x="528" y="108" width="200" height="40" rx="10" fill="#EAF6EF" stroke="#B8DEC8"/><circle cx="550" cy="128" r="10" fill="#25A55E"/><text x="550" y="132" text-anchor="middle" font-size="10" fill="#fff">✓</text><text x="568" y="125" font-size="11.5" font-weight="600" fill="#0A6B4E">Manipal Uni</text><text x="568" y="140" font-size="10.5" fill="#3A6A55">by HeroEd · number</text>
+        <rect x="772" y="108" width="200" height="40" rx="10" fill="#EAF6EF" stroke="#B8DEC8"/><circle cx="794" cy="128" r="10" fill="#25A55E"/><text x="794" y="132" text-anchor="middle" font-size="10" fill="#fff">✓</text><text x="812" y="125" font-size="11.5" font-weight="600" fill="#0A6B4E">Shoolini Uni</text><text x="812" y="140" font-size="10.5" fill="#3A6A55">by HeroEd · number</text>
+        <path d="M628 148 V164" stroke="#0A6B4E" stroke-width="1.5" marker-end="url(#we)"/>
+        <path d="M872 148 V164" stroke="#0A6B4E" stroke-width="1.5" marker-end="url(#we)"/>
+        <rect x="548" y="166" width="160" height="30" rx="9" fill="#fff" stroke="#E2DAC8"/><text x="628" y="185" text-anchor="middle" font-size="12" fill="#16231E">Chat A</text>
+        <rect x="792" y="166" width="160" height="30" rx="9" fill="#fff" stroke="#E2DAC8"/><text x="872" y="185" text-anchor="middle" font-size="12" fill="#16231E">Chat B</text>
+        <path d="M628 196 V212" stroke="#0A6B4E" stroke-width="1.5" marker-end="url(#we)"/>
+        <path d="M872 196 V212" stroke="#0A6B4E" stroke-width="1.5" marker-end="url(#we)"/>
+        <rect x="540" y="214" width="176" height="46" rx="10" fill="#FBF8EF" stroke="#E2DAC8"/><text x="556" y="234" font-size="11.5" font-weight="600" fill="#16231E">Opp · Manipal</text><text x="556" y="251" font-size="11" fill="#6E7B74">→ owner LC-A</text>
+        <rect x="784" y="214" width="176" height="46" rx="10" fill="#FBF8EF" stroke="#E2DAC8"/><text x="800" y="234" font-size="11.5" font-weight="600" fill="#16231E">Opp · Shoolini</text><text x="800" y="251" font-size="11" fill="#6E7B74">→ owner LC-B</text>
+        <rect x="540" y="288" width="420" height="34" rx="9" fill="#EAF6EF" stroke="#B8DEC8"/><text x="560" y="309" font-size="11.5" font-weight="600" fill="#0A6B4E">✓ Each chat maps cleanly to one opportunity &amp; owner</text>
+        <rect x="540" y="344" width="420" height="34" rx="9" fill="#FBEFE9" stroke="#E7C3B4"/><text x="560" y="365" font-size="11.5" fill="#9B5740">Catch: two HeroEd numbers message the same student</text>
+      </svg>
+      <figcaption class="fig-cap"><b>In plain terms:</b> Model A keeps one relationship but the system must figure out which program a reply is about; Model B sorts itself out but messages the student from two numbers.</figcaption>
+    </figure>
+
+    <div class="two">
+      <div class="card" data-rise>
+        <h4>Model A · Keep it in one chat</h4>
+        <p style="margin-bottom:10px">One <span class="tag">Counselling by HeroEd</span> number carries every program for the student.</p>
+        <div class="pillrow"><span class="pill">+ one coherent relationship</span><span class="pill">+ easy to compare programs</span><span class="pill">+ fewer numbers to run</span></div>
+        <div class="pillrow" style="margin-top:8px"><span class="pill" style="background:#FBEFE9;color:#9B5740">− must match a reply to the right opp</span><span class="pill" style="background:#FBEFE9;color:#9B5740">− one chat, many opp owners</span></div>
+      </div>
+      <div class="card" data-rise>
+        <h4>Model B · A number per university</h4>
+        <p style="margin-bottom:10px">Each university is its own verified number, e.g. <span class="tag">Manipal by HeroEd</span>.</p>
+        <div class="pillrow"><span class="pill">+ each chat = one opp, automatically</span><span class="pill">+ university-specific branding</span></div>
+        <div class="pillrow" style="margin-top:8px"><span class="pill" style="background:#FBEFE9;color:#9B5740">− many numbers to set up &amp; manage</span><span class="pill" style="background:#FBEFE9;color:#9B5740">− student hears from several numbers</span><span class="pill" style="background:#FBEFE9;color:#9B5740">− new numbers start with low limits</span></div>
+      </div>
+    </div>
+
+    <div class="rec" data-rise>
+      <h5>✓ Our answer — a hybrid, with the CRM in charge</h5>
+      <p>Use a <strong>dedicated number for the few big-volume universities</strong> (Manipal, Shoolini) where the branding and clean sorting are worth the setup. Use <strong>one shared "Counselling by HeroEducation" number for everything else</strong> and for students looking at more than one program, where a single relationship simply converts better.</p>
+      <p>Whichever is used, the CRM's one-contact-many-opportunities model stays in charge — it picks who owns the chat, decides which program a message is about, and <strong>caps frequency and consent at the student level across every number</strong>, so no one is ever messaged by three HeroEd numbers and a STOP anywhere stops everywhere.</p>
+    </div>
+  </section>
+
+  <!-- ============ 02 FOUNDATION ============ -->
+  <section id="foundation">
+    <div class="eyebrow">Phase 02 — Foundation</div>
+    <h2>Connect our WABA accounts to DoubleTick</h2>
+    <p class="lead">DoubleTick sits on top of the official WhatsApp Business API and becomes our single control layer. Every business number is governed centrally, yet each Learning Consultant still works from their own WhatsApp identity — on laptop and phone.</p>
+
+    <figure class="figure" data-rise>
+      <div class="fig-title">Architecture · How it connects</div>
+      <svg viewBox="0 0 1000 512" role="img" aria-label="Architecture diagram">
+        <defs>
+          <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker>
+          <marker id="ahm" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#C9892F"/></marker>
+        </defs>
+        <!-- left: WABA accounts -->
+        <text x="40" y="38" class="svg-mono" font-size="12" letter-spacing="2" fill="#1AA06A" font-weight="600">WABA ACCOUNTS</text>
+        <g>
+          <rect x="34" y="58" width="210" height="58" rx="13" fill="#FBF8EF" stroke="#E2DAC8"/>
+          <circle cx="66" cy="87" r="13" fill="#25A55E"/><text x="66" y="92" text-anchor="middle" font-size="13" fill="#fff">✓</text>
+          <text x="90" y="83" font-size="15" font-weight="600" fill="#16231E">HeroEducation</text>
+          <text x="90" y="102" font-size="12" fill="#6E7B74">Business number</text>
+
+          <rect x="34" y="128" width="210" height="58" rx="13" fill="#FBF8EF" stroke="#E2DAC8"/>
+          <circle cx="66" cy="157" r="13" fill="#25A55E"/><text x="66" y="162" text-anchor="middle" font-size="13" fill="#fff">✓</text>
+          <text x="90" y="153" font-size="15" font-weight="600" fill="#16231E">FMC</text>
+          <text x="90" y="172" font-size="12" fill="#6E7B74">Business number</text>
+
+          <rect x="34" y="198" width="210" height="58" rx="13" fill="#FBF8EF" stroke="#E2DAC8"/>
+          <circle cx="66" cy="227" r="13" fill="#25A55E"/><text x="66" y="232" text-anchor="middle" font-size="13" fill="#fff">✓</text>
+          <text x="90" y="223" font-size="15" font-weight="600" fill="#16231E">Other WABA</text>
+          <text x="90" y="242" font-size="12" fill="#6E7B74">Add unlimited</text>
+        </g>
+        <!-- connectors to hub -->
+        <path d="M244 87 C300 87 320 157 386 157" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah)"/>
+        <path d="M244 157 H386" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah)"/>
+        <path d="M244 227 C300 227 320 157 386 157" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah)"/>
+
+        <!-- hub: DoubleTick -->
+        <rect x="392" y="110" width="216" height="96" rx="18" fill="#0A6B4E"/>
+        <text x="500" y="150" text-anchor="middle" font-size="22" font-weight="700" fill="#fff">DoubleTick</text>
+        <text x="500" y="174" text-anchor="middle" class="svg-mono" font-size="10.5" letter-spacing="1" fill="#9BE8C5">CONTROL LAYER</text>
+        <text x="500" y="192" text-anchor="middle" font-size="11" fill="#CFEEE0">Official API · Meta Partner</text>
+
+        <!-- branch connectors -->
+        <path d="M608 140 C680 140 690 86 756 86" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah)"/>
+        <path d="M608 176 C680 176 690 250 756 250" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah)"/>
+
+        <!-- right top: central inbox -->
+        <rect x="760" y="50" width="226" height="86" rx="15" fill="#fff" stroke="#E2DAC8"/>
+        <text x="780" y="80" font-size="15.5" font-weight="600" fill="#16231E">Central Governed Inbox</text>
+        <text x="780" y="102" font-size="12.5" fill="#6E7B74">One view across every WABA,</text>
+        <text x="780" y="119" font-size="12.5" fill="#6E7B74">monitored by Ops · Marketing · Leadership</text>
+
+        <!-- right bottom: LC identities -->
+        <rect x="760" y="206" width="226" height="118" rx="15" fill="#fff" stroke="#E2DAC8"/>
+        <text x="780" y="234" font-size="15.5" font-weight="600" fill="#16231E">LC Identities</text>
+        <circle cx="794" cy="262" r="14" fill="#EDE6D4"/><text x="794" y="267" text-anchor="middle" font-size="12" fill="#0A6B4E" font-weight="700">D</text>
+        <text x="816" y="259" font-size="13" font-weight="600" fill="#16231E">Devesh HeroEducation</text>
+        <text x="816" y="275" font-size="11.5" fill="#6E7B74">Own display picture &amp; identity</text>
+        <!-- access icons -->
+        <rect x="780" y="290" width="92" height="24" rx="7" fill="#FBF8EF" stroke="#E2DAC8"/>
+        <text x="826" y="306" text-anchor="middle" font-size="11.5" fill="#0A6B4E" font-weight="600">💻 Web portal</text>
+        <rect x="882" y="290" width="86" height="24" rx="7" fill="#FBF8EF" stroke="#E2DAC8"/>
+        <text x="925" y="306" text-anchor="middle" font-size="11.5" fill="#0A6B4E" font-weight="600">📱 App</text>
+
+        <!-- connector: identities -> reply panel -->
+        <path d="M873 324 V336" fill="none" stroke="#E2DAC8" stroke-width="1.6" marker-end="url(#ah)"/>
+
+        <!-- right bottom 2: reply-from selector -->
+        <rect x="760" y="340" width="226" height="138" rx="15" fill="#fff" stroke="#E2DAC8"/>
+        <text x="780" y="366" font-size="14.5" font-weight="600" fill="#16231E">Reply from — LC chooses</text>
+        <text x="780" y="383" font-size="11" fill="#6E7B74">Switch sending account mid-thread</text>
+        <rect x="772" y="392" width="202" height="26" rx="8" fill="#EAF6EF" stroke="#1AA06A"/>
+        <text x="784" y="409" font-size="11.5" fill="#0A6B4E" font-weight="600">✓ HeroEducation · official WABA</text>
+        <rect x="772" y="422" width="202" height="26" rx="8" fill="#FBF8EF" stroke="#E2DAC8"/>
+        <text x="784" y="439" font-size="11.5" fill="#3A4742">Devesh · personal LC identity</text>
+        <rect x="772" y="452" width="202" height="26" rx="8" fill="#FBF8EF" stroke="#E2DAC8"/>
+        <text x="784" y="469" font-size="11.5" fill="#3A4742">Counselling by HeroEducation</text>
+
+        <!-- dashed loop: chosen account routes back through DoubleTick -->
+        <path d="M758 408 C652 408 588 300 540 208" fill="none" stroke="#C9892F" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#ahm)"/>
+        <text x="612" y="360" text-anchor="middle" class="svg-mono" font-size="10" fill="#C9892F" font-weight="600">reply sent via the chosen account</text>
+
+        <!-- baseline label -->
+        <text x="40" y="500" font-size="12.5" fill="#6E7B74">Customers message a single business number → routed, governed, and assigned inside DoubleTick.</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Outcome:</b> central governance for the business, personal ownership for the LC — no shared logins, no lost chats.</figcaption>
+    </figure>
+
+    <div class="stack">
+      <div class="card" data-rise><h4><span class="badge-num">A</span> Connect every WABA, officially</h4><p>Each business number — <span class="tag">HeroEducation</span>, <span class="tag">FMC</span> and others — is connected through the official WhatsApp Business API as a Meta Business Partner. Add numbers as we scale, with no per-seat shared-phone workarounds.</p></div>
+      <div class="card" data-rise><h4><span class="badge-num">B</span> One centralised inbox for all WABAs combined</h4><p>Every conversation across <em>every</em> business number lands in a single governed inbox — not one inbox per WABA — so Ops, Marketing and Leadership monitor all accounts in one place. Nothing is lost when an LC is offline, on leave, or mid-handover.</p></div>
+      <div class="card" data-rise><h4><span class="badge-num">C</span> A managed identity for every LC</h4><p>Each Learning Consultant gets a business account named as their LC WABA identity — e.g. <span class="tag">Devesh HeroEducation</span> — with a display picture of their choosing, so the customer feels a personal relationship while the business retains control.</p></div>
+      <div class="card" data-rise><h4><span class="badge-num">D</span> Work from anywhere, always in sync</h4><p>The LC operates from the DoubleTick <strong>web portal</strong> on a laptop and the DoubleTick <strong>app</strong> on their phone — the same conversations, agent permissions and SLAs, synced in real time across both.</p></div>
+      <div class="card" data-rise><h4><span class="badge-num">E</span> Reply from any identity, on the fly</h4><p>For each conversation the LC decides who the reply comes from — the official WABA the customer first messaged, their own LC identity, or a different account such as <span class="tag">Counselling by HeroEducation</span>. They can switch sending account mid-thread to match the context, while the full history stays on one record.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ 02 INTELLIGENT CONVERSATIONS ============ -->
+  <section id="intel">
+    <div class="eyebrow">Phase 03 — Intelligent Conversations</div>
+    <h2>Qualify, score and follow up automatically</h2>
+    <p class="lead">The engagement layer does the repetitive work — qualifying inbound interest, chasing silent leads on a schedule, and scoring intent — so LCs spend their time only on leads that are ready to convert.</p>
+
+    <!-- AI qualification bot -->
+    <div class="feat">
+      <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 7V4M9 13h.01M15 13h.01M9 4h6"/></svg></span><h3>AI Lead Qualification Bot</h3></div>
+      <p>A no-code bot greets every new lead, asks the qualifying questions an LC would, and only escalates to a human once the lead is worth a human's time. It runs across all entry points and writes its findings straight to the opportunity.</p>
+    </div>
+    <figure class="figure" data-rise>
+      <div class="fig-title">Flow · From inbound to qualified opportunity</div>
+      <svg viewBox="0 0 1000 312" role="img" aria-label="AI qualification flow">
+        <defs><marker id="ah2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker></defs>
+        <!-- entry points -->
+        <text x="36" y="34" class="svg-mono" font-size="11.5" letter-spacing="2" fill="#1AA06A" font-weight="600">ENTRY POINTS</text>
+        <rect x="30" y="48" width="168" height="34" rx="9" fill="#FBF8EF" stroke="#E2DAC8"/><text x="48" y="69" font-size="13" fill="#16231E">Click-to-WhatsApp ad</text>
+        <rect x="30" y="92" width="168" height="34" rx="9" fill="#FBF8EF" stroke="#E2DAC8"/><text x="48" y="113" font-size="13" fill="#16231E">Website / QR widget</text>
+        <rect x="30" y="136" width="168" height="34" rx="9" fill="#FBF8EF" stroke="#E2DAC8"/><text x="48" y="157" font-size="13" fill="#16231E">Inbound message</text>
+        <path d="M198 109 H252" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah2)"/>
+
+        <!-- bot node -->
+        <rect x="258" y="58" width="214" height="160" rx="16" fill="#0A6B4E"/>
+        <text x="278" y="90" font-size="16" font-weight="700" fill="#fff">Qualification Bot</text>
+        <text x="278" y="116" font-size="12.5" fill="#CFEEE0">Asks &amp; captures:</text>
+        <text x="278" y="138" font-size="12.5" fill="#EAF7F0">• Program / university interest</text>
+        <text x="278" y="158" font-size="12.5" fill="#EAF7F0">• Eligibility &amp; qualification</text>
+        <text x="278" y="178" font-size="12.5" fill="#EAF7F0">• Timeline &amp; intent</text>
+        <text x="278" y="198" font-size="12.5" fill="#EAF7F0">• Budget range</text>
+        <path d="M472 138 H528" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah2)"/>
+
+        <!-- classify -->
+        <rect x="534" y="104" width="150" height="70" rx="14" fill="#fff" stroke="#E2DAC8"/>
+        <text x="609" y="135" text-anchor="middle" font-size="14.5" font-weight="600" fill="#16231E">Classify</text>
+        <text x="609" y="155" text-anchor="middle" font-size="11.5" fill="#6E7B74">score + tag</text>
+
+        <!-- branches -->
+        <path d="M684 122 C720 122 730 70 766 70" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah2)"/>
+        <path d="M684 139 H766" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah2)"/>
+        <path d="M684 156 C720 156 730 208 766 208" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah2)"/>
+
+        <rect x="770" y="48" width="200" height="44" rx="11" fill="#FBEFE9" stroke="#E7C3B4"/><text x="786" y="68" font-size="13" font-weight="600" fill="#C25434">HOT → route to LC</text><text x="786" y="84" font-size="11" fill="#9B5740">create &amp; assign opportunity</text>
+        <rect x="770" y="118" width="200" height="44" rx="11" fill="#EAF6EF" stroke="#B8DEC8"/><text x="786" y="138" font-size="13" font-weight="600" fill="#0A6B4E">WARM → nurture flow</text><text x="786" y="154" font-size="11" fill="#3A6A55">drip + follow-up</text>
+        <rect x="770" y="188" width="200" height="44" rx="11" fill="#F1EEE6" stroke="#DAD2C0"/><text x="786" y="208" font-size="13" font-weight="600" fill="#6E7B74">COLD → catalogue</text><text x="786" y="224" font-size="11" fill="#8A938C">self-serve browse</text>
+
+        <text x="36" y="278" font-size="12.5" fill="#6E7B74">Result: HiPrLAP only ever assigns leads that have already shown intent — LC time is spent on qualified opportunities.</text>
+        <text x="36" y="298" class="svg-mono" font-size="11" fill="#1AA06A">3 HOURS REDUCED IN LEAD QUALIFICATION TIME · BENCHMARK FROM SIMILAR DEPLOYMENTS</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Why it matters:</b> we either use DoubleTick's decision model or plug in our own bot socket — drag-and-drop, owned by Product / Ops / Marketing.</figcaption>
+    </figure>
+
+    <!-- silence follow ups -->
+    <div class="feat" style="margin-top:46px">
+      <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h3>Silence-based follow-ups</h3></div>
+      <p>Leads rarely reply on the first message. Custom flows detect silence and send a scheduled, escalating sequence of nudges — each after a configurable gap — until the lead re-engages or is marked dormant for a later re-engagement broadcast.</p>
+      <div class="pillrow"><span class="pill">gap = x hours / x mins</span><span class="pill">configurable per stage</span><span class="pill">auto-stops on reply</span></div>
+    </div>
+    <figure class="figure" data-rise>
+      <div class="fig-title">Timeline · A silence-driven nurture sequence</div>
+      <svg viewBox="0 0 1000 250" role="img" aria-label="Silence follow-up timeline">
+        <!-- 24h window bracket -->
+        <path d="M70 44 H470" stroke="#1AA06A" stroke-width="1.4"/>
+        <path d="M70 44 V54 M470 44 V54" stroke="#1AA06A" stroke-width="1.4"/>
+        <text x="270" y="36" text-anchor="middle" class="svg-mono" font-size="11" fill="#1AA06A" font-weight="600">24-HOUR SERVICE WINDOW · FREE-FORM MESSAGES OK</text>
+        <text x="730" y="36" text-anchor="middle" class="svg-mono" font-size="11" fill="#C9892F" font-weight="600">BEYOND 24H · APPROVED TEMPLATES ONLY</text>
+        <path d="M530 44 H950" stroke="#C9892F" stroke-width="1.4" stroke-dasharray="5 4"/>
+        <path d="M530 44 V54 M950 44 V54" stroke="#C9892F" stroke-width="1.4"/>
+
+        <!-- baseline -->
+        <line x1="70" y1="120" x2="950" y2="120" stroke="#E2DAC8" stroke-width="2"/>
+        <!-- nodes -->
+        <g>
+          <circle cx="120" cy="120" r="11" fill="#0A6B4E"/><text x="120" y="100" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16231E">Lead replies</text><text x="120" y="150" text-anchor="middle" font-size="11" fill="#6E7B74">t = 0</text>
+          <line x1="131" y1="120" x2="289" y2="120" stroke="#E2DAC8" stroke-width="2" stroke-dasharray="4 4"/><text x="210" y="112" text-anchor="middle" class="svg-mono" font-size="10.5" fill="#6E7B74">wait 4h · silent</text>
+
+          <circle cx="300" cy="120" r="11" fill="#1AA06A"/><text x="300" y="100" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16231E">Follow-up 1</text><text x="300" y="150" text-anchor="middle" font-size="11" fill="#6E7B74">gentle nudge</text>
+          <line x1="311" y1="120" x2="489" y2="120" stroke="#E2DAC8" stroke-width="2" stroke-dasharray="4 4"/><text x="400" y="112" text-anchor="middle" class="svg-mono" font-size="10.5" fill="#6E7B74">wait 1 day</text>
+
+          <circle cx="500" cy="120" r="11" fill="#1AA06A"/><text x="500" y="100" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16231E">Follow-up 2</text><text x="500" y="150" text-anchor="middle" font-size="11" fill="#6E7B74">value + offer</text>
+          <line x1="511" y1="120" x2="699" y2="120" stroke="#E2DAC8" stroke-width="2" stroke-dasharray="4 4"/><text x="610" y="112" text-anchor="middle" class="svg-mono" font-size="10.5" fill="#6E7B74">wait 3 days</text>
+
+          <circle cx="710" cy="120" r="11" fill="#C9892F"/><text x="710" y="100" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16231E">Follow-up 3</text><text x="710" y="150" text-anchor="middle" font-size="11" fill="#6E7B74">template re-engage</text>
+          <line x1="721" y1="120" x2="869" y2="120" stroke="#E2DAC8" stroke-width="2" stroke-dasharray="4 4"/>
+
+          <circle cx="880" cy="120" r="11" fill="#6E7B74"/><text x="880" y="100" text-anchor="middle" font-size="12.5" font-weight="600" fill="#16231E">Mark dormant</text><text x="880" y="150" text-anchor="middle" font-size="11" fill="#6E7B74">→ re-engage list</text>
+        </g>
+        <!-- auto-stop note -->
+        <rect x="70" y="186" width="880" height="36" rx="10" fill="#EAF6EF" stroke="#B8DEC8"/>
+        <text x="86" y="209" font-size="13" fill="#0A6B4E">↩  Any reply at any point instantly halts the sequence and hands the live conversation back to the LC.</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Design note:</b> the 24-hour rule shapes the flow — sends beyond the window must use Meta-approved templates, so the sequence is built around it from day one.</figcaption>
+    </figure>
+
+    <!-- hot warm scoring -->
+    <div class="feat" style="margin-top:46px">
+      <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 17l5-5 4 4 8-8"/><path d="M21 8v5h-5"/></svg></span><h3>Hot / warm lead scoring</h3></div>
+      <p>The platform reads intent from how a lead behaves — not just what they say — and translates it into a score and tier that flows straight into the CRM, where we automate the right action for each tier.</p>
+    </div>
+    <figure class="figure" data-rise>
+      <div class="fig-title">Model · Signals → score → routed action</div>
+      <svg viewBox="0 0 1000 318" role="img" aria-label="Lead scoring model">
+        <defs><marker id="ah3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker></defs>
+        <!-- signals -->
+        <text x="36" y="34" class="svg-mono" font-size="11.5" letter-spacing="2" fill="#1AA06A" font-weight="600">SIGNALS</text>
+        <rect x="30" y="48" width="206" height="206" rx="14" fill="#FBF8EF" stroke="#E2DAC8"/>
+        <text x="52" y="82" font-size="13.5" fill="#16231E">↩ Conversation turns</text>
+        <text x="52" y="116" font-size="13.5" fill="#16231E">🎯 Intent keywords</text>
+        <text x="52" y="150" font-size="13.5" fill="#16231E">⚡ Response speed</text>
+        <text x="52" y="184" font-size="13.5" fill="#16231E">❓ Questions asked</text>
+        <text x="52" y="218" font-size="13.5" fill="#16231E">🗓 Booking actions</text>
+        <path d="M236 151 H300" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah3)"/>
+
+        <!-- engine -->
+        <rect x="306" y="106" width="170" height="92" rx="16" fill="#0A6B4E"/>
+        <text x="391" y="146" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Scoring</text>
+        <text x="391" y="168" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Engine</text>
+        <text x="391" y="186" text-anchor="middle" class="svg-mono" font-size="10" fill="#9BE8C5">→ CRM tag + score</text>
+        <path d="M476 132 C516 132 524 78 564 78" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah3)"/>
+        <path d="M476 152 H564" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah3)"/>
+        <path d="M476 172 C516 172 524 226 564 226" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah3)"/>
+
+        <!-- tiers -->
+        <rect x="570" y="54" width="400" height="50" rx="12" fill="#FBEFE9" stroke="#E7C3B4"/>
+        <circle cx="596" cy="79" r="9" fill="#C25434"/>
+        <text x="616" y="76" font-size="14.5" font-weight="700" fill="#C25434">HOT</text>
+        <text x="616" y="93" font-size="12" fill="#9B5740">Pass to CRM → reassign or notify LC on superconnect</text>
+
+        <rect x="570" y="128" width="400" height="50" rx="12" fill="#EAF6EF" stroke="#B8DEC8"/>
+        <circle cx="596" cy="153" r="9" fill="#1AA06A"/>
+        <text x="616" y="150" font-size="14.5" font-weight="700" fill="#0A6B4E">WARM</text>
+        <text x="616" y="167" font-size="12" fill="#3A6A55">Automated nurture flow + scheduled follow-ups</text>
+
+        <rect x="570" y="202" width="400" height="50" rx="12" fill="#F1EEE6" stroke="#DAD2C0"/>
+        <circle cx="596" cy="227" r="9" fill="#6E7B74"/>
+        <text x="616" y="224" font-size="14.5" font-weight="700" fill="#6E7B74">COLD</text>
+        <text x="616" y="241" font-size="12" fill="#8A938C">Catalogue / drip — revisit via re-engage broadcast</text>
+
+        <text x="36" y="294" font-size="12.5" fill="#6E7B74">Scores are written back to the opportunity, giving the CRM a live view of conversation-level intent for every lead.</text>
+      </svg>
+      <figcaption class="fig-cap"><b>The hook:</b> "superconnect" instantly puts a hot lead in front of the right LC — the score and the routing happen in the same motion.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ 03 OMNICHANNEL AI ============ -->
+  <section id="omni">
+    <div class="eyebrow">Phase 04 — Omnichannel AI</div>
+    <h2>Our AI voice bot &amp; the WhatsApp bot, working as one</h2>
+    <p class="lead">Our in-house AI voice bot does both inbound and outbound calls and exchanges webhooks in real time — so it isn't a separate dialer, it's a peer to the WhatsApp bot. The CRM is the conductor; voice and WhatsApp are its two arms, each able to hand a live lead to the other.</p>
+
+    <!-- keystone: orchestration loop -->
+    <figure class="figure" data-rise>
+      <div class="fig-title">Architecture · One brain, two arms</div>
+      <svg viewBox="0 0 1000 360" role="img" aria-label="Voice and WhatsApp orchestration loop">
+        <defs>
+          <marker id="oa" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker>
+          <marker id="ob" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#1AA06A"/></marker>
+        </defs>
+        <!-- centre: CRM brain -->
+        <rect x="396" y="128" width="208" height="104" rx="20" fill="#0A6B4E"/>
+        <text x="500" y="166" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">CRM</text>
+        <text x="500" y="188" text-anchor="middle" class="svg-mono" font-size="10.5" letter-spacing="1" fill="#9BE8C5">THE CONDUCTOR</text>
+        <text x="500" y="208" text-anchor="middle" font-size="11.5" fill="#CFEEE0">Opportunity = single source of truth</text>
+
+        <!-- left: WhatsApp bot -->
+        <rect x="34" y="120" width="220" height="120" rx="18" fill="#fff" stroke="#E2DAC8"/>
+        <circle cx="70" cy="152" r="15" fill="#25A55E"/><text x="70" y="157" text-anchor="middle" font-size="14" fill="#fff">✓</text>
+        <text x="94" y="150" font-size="15.5" font-weight="700" fill="#16231E">WhatsApp Bot</text>
+        <text x="94" y="167" font-size="11.5" fill="#6E7B74">DoubleTick</text>
+        <text x="54" y="198" font-size="12" fill="#3A4742">Async · assets · persistent</text>
+        <text x="54" y="217" font-size="12" fill="#3A4742">low-friction reach</text>
+
+        <!-- right: voice bot -->
+        <rect x="746" y="120" width="220" height="120" rx="18" fill="#fff" stroke="#E2DAC8"/>
+        <circle cx="782" cy="152" r="15" fill="#0A6B4E"/><text x="782" y="158" text-anchor="middle" font-size="15" fill="#fff">☎</text>
+        <text x="806" y="150" font-size="15.5" font-weight="700" fill="#16231E">AI Voice Bot</text>
+        <text x="806" y="167" font-size="11.5" fill="#6E7B74">In-house · inbound + outbound</text>
+        <text x="766" y="198" font-size="12" fill="#3A4742">Synchronous · high-intent</text>
+        <text x="766" y="217" font-size="12" fill="#3A4742">nuance &amp; objection handling</text>
+
+        <!-- arrows WA <-> CRM -->
+        <path d="M254 158 H392" fill="none" stroke="#1AA06A" stroke-width="1.7" marker-end="url(#ob)"/>
+        <text x="323" y="150" text-anchor="middle" class="svg-mono" font-size="9.5" fill="#1AA06A">chat summary · score · opt-out</text>
+        <path d="M392 202 H256" fill="none" stroke="#0A6B4E" stroke-width="1.7" marker-end="url(#oa)"/>
+        <text x="323" y="222" text-anchor="middle" class="svg-mono" font-size="9.5" fill="#0A6B4E">send message · trigger flow</text>
+
+        <!-- arrows CRM <-> voice -->
+        <path d="M604 158 H744" fill="none" stroke="#0A6B4E" stroke-width="1.7" marker-end="url(#oa)"/>
+        <text x="674" y="150" text-anchor="middle" class="svg-mono" font-size="9.5" fill="#0A6B4E">start call · with context</text>
+        <path d="M744 202 H606" fill="none" stroke="#1AA06A" stroke-width="1.7" marker-end="url(#ob)"/>
+        <text x="674" y="222" text-anchor="middle" class="svg-mono" font-size="9.5" fill="#1AA06A">transcript · sentiment · outcome</text>
+
+        <!-- direct handoff loop (top) -->
+        <path d="M150 120 C150 60 850 60 850 120" fill="none" stroke="#C9892F" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#oa)"/>
+        <text x="500" y="56" text-anchor="middle" class="svg-mono" font-size="10.5" fill="#C9892F" font-weight="600">DIRECT CHANNEL HANDOFF — EITHER BOT CAN PASS A LIVE LEAD TO THE OTHER</text>
+
+        <!-- entry points bottom -->
+        <text x="34" y="290" class="svg-mono" font-size="11" letter-spacing="1.5" fill="#6E7B74" font-weight="600">EVERY EVENT JOINS THE SAME RECORD</text>
+        <rect x="34" y="302" width="186" height="32" rx="9" fill="#FBF8EF" stroke="#E2DAC8"/><text x="50" y="323" font-size="12" fill="#16231E">Inbound call → AI voice</text>
+        <rect x="232" y="302" width="206" height="32" rx="9" fill="#FBF8EF" stroke="#E2DAC8"/><text x="248" y="323" font-size="12" fill="#16231E">Inbound chat → WhatsApp bot</text>
+        <rect x="450" y="302" width="206" height="32" rx="9" fill="#FBF8EF" stroke="#E2DAC8"/><text x="466" y="323" font-size="12" fill="#16231E">CTWA / website / QR</text>
+        <rect x="668" y="302" width="298" height="32" rx="9" fill="#FBF8EF" stroke="#E2DAC8"/><text x="684" y="323" font-size="12" fill="#16231E">Outbound triggered by opportunity state</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Keystone:</b> two bots never hold separate memories of a lead — the opportunity is the shared brain, and webhooks keep both arms in sync.</figcaption>
+    </figure>
+
+    <!-- handoff patterns -->
+    <div class="feat" style="margin-top:40px">
+      <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 17l10-10M17 7v10H7"/><path d="M3 7h4M3 12h4M3 17h2"/></svg></span><h3>How the handoffs work</h3></div>
+      <p>Each channel covers the other's weakness: voice is high-intent but low-pickup; WhatsApp is low-friction and carries assets but lacks urgency. The handoffs turn that into a single, continuous conversation.</p>
+    </div>
+    <figure class="figure" data-rise>
+      <div class="fig-title">Handoff patterns · Voice ↔ WhatsApp</div>
+      <svg viewBox="0 0 1000 312" role="img" aria-label="Handoff patterns between voice and WhatsApp">
+        <defs><marker id="oc" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker></defs>
+        <!-- left column: Voice -> WhatsApp -->
+        <rect x="28" y="28" width="450" height="260" rx="18" fill="#FBF8EF" stroke="#E2DAC8"/>
+        <text x="52" y="60" font-size="15.5" font-weight="700" fill="#16231E">Voice → WhatsApp</text>
+        <circle cx="60" cy="54" r="0"/>
+        <!-- missed call recovery -->
+        <rect x="52" y="78" width="402" height="86" rx="13" fill="#fff" stroke="#E2DAC8"/>
+        <text x="72" y="104" font-size="13.5" font-weight="600" fill="#0A6B4E">Missed-call recovery</text>
+        <text x="72" y="124" font-size="12" fill="#3A4742">Call unanswered or voicemail → DoubleTick instantly</text>
+        <text x="72" y="141" font-size="12" fill="#3A4742">fires a WhatsApp: "Tried reaching you — info inside,</text>
+        <text x="72" y="158" font-size="12" fill="#3A4742">or pick a time." Recovers the pipeline voice alone loses.</text>
+        <!-- asset delivery -->
+        <rect x="52" y="176" width="402" height="92" rx="13" fill="#fff" stroke="#E2DAC8"/>
+        <text x="72" y="202" font-size="13.5" font-weight="600" fill="#0A6B4E">Asset delivery</text>
+        <text x="72" y="222" font-size="12" fill="#3A4742">Mid- or post-call, the voice bot triggers WhatsApp to</text>
+        <text x="72" y="239" font-size="12" fill="#3A4742">send what it can't speak: fee structure, brochure,</text>
+        <text x="72" y="256" font-size="12" fill="#3A4742">catalogue, booking link, payment link.</text>
+
+        <!-- right column: WhatsApp -> Voice -->
+        <rect x="522" y="28" width="450" height="260" rx="18" fill="#EAF6EF" stroke="#B8DEC8"/>
+        <text x="546" y="60" font-size="15.5" font-weight="700" fill="#16231E">WhatsApp → Voice</text>
+        <rect x="546" y="78" width="402" height="62" rx="13" fill="#fff" stroke="#B8DEC8"/>
+        <text x="566" y="103" font-size="13.5" font-weight="600" fill="#0A6B4E">Hot-lead superconnect</text>
+        <text x="566" y="123" font-size="12" fill="#3A4742">Intent spike in chat → instant AI call or LC dial. Strike while hot.</text>
+        <rect x="546" y="150" width="402" height="62" rx="13" fill="#fff" stroke="#B8DEC8"/>
+        <text x="566" y="175" font-size="13.5" font-weight="600" fill="#0A6B4E">Callback on demand</text>
+        <text x="566" y="195" font-size="12" fill="#3A4742">Lead taps "call me" or books a slot → voice bot calls at that time.</text>
+        <rect x="546" y="222" width="402" height="46" rx="13" fill="#fff" stroke="#B8DEC8"/>
+        <text x="566" y="243" font-size="13.5" font-weight="600" fill="#0A6B4E">Pre-warm before calling</text>
+        <text x="566" y="261" font-size="12" fill="#3A4742">WhatsApp intro + consent first → higher pickup, warmer call.</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Inbound too:</b> a customer calling the number is handled by the AI voice bot, written to the CRM, and can be followed up on WhatsApp — same record, same score.</figcaption>
+    </figure>
+
+    <!-- omnichannel journey swimlane -->
+    <div class="feat" style="margin-top:40px">
+      <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="0"/></svg></span><h3>One opportunity, both channels</h3></div>
+      <p>A single degree-sales journey, shown across the three lanes that run it — so leadership can see exactly where voice leads, where WhatsApp leads, and how the CRM keeps them in step.</p>
+    </div>
+    <figure class="figure" data-rise>
+      <div class="fig-title">Swimlane · A lead from ad to enrolment</div>
+      <svg viewBox="0 0 1000 340" role="img" aria-label="Omnichannel journey swimlane">
+        <defs><marker id="od" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#B6Bdb8"/></marker></defs>
+        <!-- lane labels -->
+        <text x="20" y="74" font-size="12.5" font-weight="700" fill="#25A55E">WhatsApp</text>
+        <text x="20" y="174" font-size="12.5" font-weight="700" fill="#0A6B4E">Voice</text>
+        <text x="20" y="274" font-size="12.5" font-weight="700" fill="#6E7B74">CRM</text>
+        <line x1="118" y1="40" x2="118" y2="320" stroke="#E2DAC8"/>
+        <!-- lane guides -->
+        <line x1="118" y1="100" x2="980" y2="100" stroke="#F0EAD9"/>
+        <line x1="118" y1="200" x2="980" y2="200" stroke="#F0EAD9"/>
+        <line x1="118" y1="300" x2="980" y2="300" stroke="#F0EAD9"/>
+
+        <!-- nodes: WhatsApp lane (y~62) -->
+        <g font-size="11">
+          <rect x="132" y="46" width="118" height="40" rx="10" fill="#EAF6EF" stroke="#B8DEC8"/><text x="191" y="63" text-anchor="middle" fill="#0A6B4E">Ad lead lands</text><text x="191" y="78" text-anchor="middle" fill="#3A6A55">bot qualifies</text>
+          <rect x="468" y="46" width="118" height="40" rx="10" fill="#EAF6EF" stroke="#B8DEC8"/><text x="527" y="63" text-anchor="middle" fill="#0A6B4E">Brochure + slot</text><text x="527" y="78" text-anchor="middle" fill="#3A6A55">link sent</text>
+          <rect x="636" y="46" width="118" height="40" rx="10" fill="#EAF6EF" stroke="#B8DEC8"/><text x="695" y="63" text-anchor="middle" fill="#0A6B4E">Confirm +</text><text x="695" y="78" text-anchor="middle" fill="#3A6A55">reminder</text>
+          <rect x="862" y="46" width="118" height="40" rx="10" fill="#EAF6EF" stroke="#B8DEC8"/><text x="921" y="63" text-anchor="middle" fill="#0A6B4E">Post-sale</text><text x="921" y="78" text-anchor="middle" fill="#3A6A55">journey</text>
+        </g>
+        <!-- Voice lane (y~162) -->
+        <g font-size="11">
+          <rect x="300" y="146" width="124" height="40" rx="10" fill="#fff" stroke="#E2DAC8"/><text x="362" y="163" text-anchor="middle" fill="#0A6B4E">AI call in mins</text><text x="362" y="178" text-anchor="middle" fill="#6E7B74">hot + reachable</text>
+          <rect x="770" y="146" width="124" height="40" rx="10" fill="#fff" stroke="#E2DAC8"/><text x="832" y="163" text-anchor="middle" fill="#0A6B4E">Voice escalation</text><text x="832" y="178" text-anchor="middle" fill="#6E7B74">ignored payment</text>
+        </g>
+        <!-- CRM lane (y~262) -->
+        <g font-size="11">
+          <rect x="216" y="246" width="120" height="40" rx="10" fill="#F1EEE6" stroke="#DAD2C0"/><text x="276" y="263" text-anchor="middle" fill="#16231E">Opp created +</text><text x="276" y="278" text-anchor="middle" fill="#6E7B74">scored HOT</text>
+          <rect x="552" y="246" width="120" height="40" rx="10" fill="#F1EEE6" stroke="#DAD2C0"/><text x="612" y="263" text-anchor="middle" fill="#16231E">Slot booked →</text><text x="612" y="278" text-anchor="middle" fill="#6E7B74">stage advanced</text>
+          <rect x="724" y="246" width="120" height="40" rx="10" fill="#F1EEE6" stroke="#DAD2C0"/><text x="784" y="263" text-anchor="middle" fill="#16231E">Enrolment</text><text x="784" y="278" text-anchor="middle" fill="#6E7B74">closed-won</text>
+        </g>
+        <!-- connectors zig-zag across lanes -->
+        <path d="M250 66 H276 V246" fill="none" stroke="#B6BDB8" stroke-width="1.4" marker-end="url(#od)"/>
+        <path d="M276 286 V286 H362 V186" fill="none" stroke="#B6BDB8" stroke-width="1.4" marker-end="url(#od)"/>
+        <path d="M362 146 V100 H468 V86" fill="none" stroke="#B6BDB8" stroke-width="1.4" marker-end="url(#od)"/>
+        <path d="M586 66 H612 V246" fill="none" stroke="#B6BDB8" stroke-width="1.4" marker-end="url(#od)"/>
+        <path d="M672 266 H695 V86" fill="none" stroke="#B6BDB8" stroke-width="1.4" marker-end="url(#od)"/>
+        <path d="M754 66 H784 V246" fill="none" stroke="#B6BDB8" stroke-width="1.4" marker-end="url(#od)"/>
+        <path d="M844 266 H832 V186" fill="none" stroke="#B6BDB8" stroke-width="1.4" marker-end="url(#od)"/>
+        <path d="M832 146 V100 H862 V86" fill="none" stroke="#B6BDB8" stroke-width="1.4" marker-end="url(#od)"/>
+      </svg>
+      <figcaption class="fig-cap"><b>Read it left to right:</b> the lead bounces between lanes, but the CRM lane shows it's all one opportunity advancing through stages.</figcaption>
+    </figure>
+
+    <!-- unified scoring + routing -->
+    <div class="feat" style="margin-top:40px">
+      <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></span><h3>Unified scoring &amp; cost-aware routing</h3></div>
+      <p>Both channels feed one score, and the decision layer picks the cheapest channel that fits the lead's heat — WhatsApp first, voice reserved for hot or high-value leads where its cost is justified.</p>
+    </div>
+    <figure class="figure" data-rise>
+      <div class="fig-title">Model · Two signal streams → one tier → routed channel</div>
+      <svg viewBox="0 0 1000 280" role="img" aria-label="Unified scoring and routing">
+        <defs><marker id="oe" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker></defs>
+        <!-- two streams -->
+        <rect x="28" y="40" width="226" height="64" rx="13" fill="#EAF6EF" stroke="#B8DEC8"/>
+        <text x="48" y="66" font-size="13" font-weight="700" fill="#0A6B4E">WhatsApp signals</text>
+        <text x="48" y="86" font-size="11.5" fill="#3A6A55">turns · keywords · response speed</text>
+        <rect x="28" y="172" width="226" height="64" rx="13" fill="#fff" stroke="#E2DAC8"/>
+        <text x="48" y="198" font-size="13" font-weight="700" fill="#0A6B4E">Voice signals</text>
+        <text x="48" y="218" font-size="11.5" fill="#3A4742">duration · sentiment · objections · connected</text>
+        <path d="M254 72 C300 72 320 130 366 130" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#oe)"/>
+        <path d="M254 204 C300 204 320 130 366 130" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#oe)"/>
+
+        <!-- merge -->
+        <rect x="372" y="98" width="150" height="64" rx="14" fill="#0A6B4E"/>
+        <text x="447" y="126" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">One score</text>
+        <text x="447" y="146" text-anchor="middle" class="svg-mono" font-size="10" fill="#9BE8C5">on the opportunity</text>
+        <path d="M522 130 H580" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#oe)"/>
+
+        <!-- routing -->
+        <rect x="586" y="40" width="386" height="56" rx="12" fill="#FBEFE9" stroke="#E7C3B4"/><text x="606" y="64" font-size="13" font-weight="700" fill="#C25434">HOT / high-value</text><text x="606" y="83" font-size="11.5" fill="#9B5740">→ AI voice call or LC dial (cost justified)</text>
+        <rect x="586" y="104" width="386" height="52" rx="12" fill="#EAF6EF" stroke="#B8DEC8"/><text x="606" y="126" font-size="13" font-weight="700" fill="#0A6B4E">WARM</text><text x="606" y="144" font-size="11.5" fill="#3A6A55">→ WhatsApp nurture + scheduled follow-ups</text>
+        <rect x="586" y="164" width="386" height="52" rx="12" fill="#F1EEE6" stroke="#DAD2C0"/><text x="606" y="186" font-size="13" font-weight="700" fill="#6E7B74">COLD</text><text x="606" y="204" font-size="11.5" fill="#8A938C">→ WhatsApp catalogue / drip (lowest cost)</text>
+
+        <text x="28" y="266" font-size="12.5" fill="#6E7B74">Default WhatsApp-first; voice is the escalation, not the opener — per-contact voice cost stays spent where it converts.</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Cost logic:</b> a great six-minute call makes a chat-silent lead hot — single-channel scoring would have missed it.</figcaption>
+    </figure>
+
+    <!-- integration contract -->
+    <div class="card" data-rise style="margin-top:10px">
+      <h4><span class="badge-num">⇄</span> The webhook contract (in-house bot)</h4>
+      <p style="margin-bottom:10px">Because the voice bot is ours, the integration is direct and two-way — no vendor middleware:</p>
+      <p style="margin-bottom:6px"><code>CRM/DoubleTick → Voice</code> &nbsp;<strong>POST /call/start</strong> — lead phone, program &amp; university identifier, stage, and the latest chat summary so the call opens with full context.</p>
+      <p style="margin-bottom:6px"><code>Voice → CRM</code> &nbsp;<strong>POST /call/outcome</strong> — transcript, AI summary, sentiment, disposition and next action, written onto the same opportunity timeline as WhatsApp summaries.</p>
+      <p><code>CRM → DoubleTick</code> &nbsp;<strong>trigger flow</strong> — on a call outcome (missed, asset-requested, follow-up due), fire the matching WhatsApp message.</p>
+    </div>
+
+    <!-- compliance callout -->
+    <div class="callout" data-rise>
+      <h5>⚠ One consent surface — not two</h5>
+      <p>Voice carries DND-registry and calling-hour rules; WhatsApp carries opt-in and the 24-hour window. Both must resolve into a single consent state on the opportunity — a STOP on chat should immediately stop the voice bot dialing, and a call opt-out should suppress WhatsApp. Decide this rule before the pilot.</p>
+    </div>
+  </section>
+
+  <!-- ============ 04 LIFECYCLE & CONTINUITY ============ -->
+  <section id="lifecycle">
+    <div class="eyebrow">Phase 05 — Lifecycle &amp; Continuity</div>
+    <h2>Beyond the sale — and beyond any one person</h2>
+    <p class="lead">The relationship doesn't end at conversion, and it can't depend on a single LC staying forever. These flows carry the customer through post-sale and protect institutional memory through team change.</p>
+
+    <!-- post sales journeys -->
+    <div class="feat">
+      <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span><h3>Post-sales journeys</h3></div>
+      <p>Once an enrolment is confirmed, automated WhatsApp journeys handle the operational work that usually clogs LC time — collecting documents, chasing fees, and onboarding the student — with the same governed, on-brand identity.</p>
+    </div>
+    <figure class="figure" data-rise>
+      <div class="fig-title">Journey · Confirmed enrolment → onboarded student</div>
+      <svg viewBox="0 0 1000 200" role="img" aria-label="Post-sales journey">
+        <defs><marker id="ah4" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker></defs>
+        <line x1="100" y1="92" x2="900" y2="92" stroke="#E2DAC8" stroke-width="2"/>
+        <!-- step 1 -->
+        <circle cx="100" cy="92" r="26" fill="#0A6B4E"/><text x="100" y="99" text-anchor="middle" font-size="18" fill="#fff">✓</text>
+        <text x="100" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#16231E">Enrolment</text><text x="100" y="165" text-anchor="middle" font-size="11.5" fill="#6E7B74">confirmation</text>
+        <!-- 2 -->
+        <circle cx="300" cy="92" r="26" fill="#1AA06A"/><text x="300" y="99" text-anchor="middle" font-size="17" fill="#fff">🗂</text>
+        <text x="300" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#16231E">Document</text><text x="300" y="165" text-anchor="middle" font-size="11.5" fill="#6E7B74">collection + checklist</text>
+        <!-- 3 -->
+        <circle cx="500" cy="92" r="26" fill="#1AA06A"/><text x="500" y="99" text-anchor="middle" font-size="17" fill="#fff">₹</text>
+        <text x="500" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#16231E">Fee / EMI</text><text x="500" y="165" text-anchor="middle" font-size="11.5" fill="#6E7B74">payment reminders</text>
+        <!-- 4 -->
+        <circle cx="700" cy="92" r="26" fill="#1AA06A"/><text x="700" y="99" text-anchor="middle" font-size="17" fill="#fff">🎓</text>
+        <text x="700" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#16231E">Onboarding</text><text x="700" y="165" text-anchor="middle" font-size="11.5" fill="#6E7B74">welcome + next steps</text>
+        <!-- 5 -->
+        <circle cx="900" cy="92" r="26" fill="#0A6B4E"/><text x="900" y="99" text-anchor="middle" font-size="17" fill="#fff">↻</text>
+        <text x="900" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#16231E">Renewal /</text><text x="900" y="165" text-anchor="middle" font-size="11.5" fill="#6E7B74">upsell trigger</text>
+        <!-- arrows -->
+        <path d="M132 60 L150 48" stroke="none"/>
+        <text x="200" y="60" text-anchor="middle" class="svg-mono" font-size="10" fill="#6E7B74">auto</text>
+        <text x="400" y="60" text-anchor="middle" class="svg-mono" font-size="10" fill="#6E7B74">scheduled</text>
+        <text x="600" y="60" text-anchor="middle" class="svg-mono" font-size="10" fill="#6E7B74">on payment</text>
+        <text x="800" y="60" text-anchor="middle" class="svg-mono" font-size="10" fill="#6E7B74">on milestone</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Operational lift:</b> document collection and payment-reminder journeys run on WhatsApp utility templates — receipts, reminders and updates land where the customer already is.</figcaption>
+    </figure>
+
+    <!-- LC offboarding -->
+    <div class="feat" style="margin-top:46px">
+      <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>LC offboarding &amp; attrition handling</h3></div>
+      <p>Sales teams turn over — and today, when an LC leaves, their relationships and chat history often leave with them. With WABA identities governed centrally, an exit becomes a clean, instant handover with zero loss of context.</p>
+    </div>
+    <figure class="figure" data-rise>
+      <div class="fig-title">Continuity · When an LC leaves the team</div>
+      <svg viewBox="0 0 1000 250" role="img" aria-label="LC offboarding continuity">
+        <defs><marker id="ah5" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker></defs>
+        <!-- departing LC -->
+        <circle cx="120" cy="110" r="34" fill="#F1EEE6" stroke="#DAD2C0"/><text x="120" y="118" text-anchor="middle" font-size="22" fill="#6E7B74">D</text>
+        <text x="120" y="172" text-anchor="middle" font-size="13.5" font-weight="600" fill="#16231E">Devesh leaves</text>
+        <text x="120" y="190" text-anchor="middle" font-size="11.5" fill="#6E7B74">access revoked</text>
+        <path d="M158 110 H262" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah5)"/>
+
+        <!-- retained vault -->
+        <rect x="270" y="58" width="260" height="104" rx="16" fill="#0A6B4E"/>
+        <text x="400" y="92" text-anchor="middle" font-size="15.5" font-weight="700" fill="#fff">History retained in WABA</text>
+        <text x="400" y="116" text-anchor="middle" font-size="12" fill="#CFEEE0">Full conversation log, tags &amp; lead</text>
+        <text x="400" y="133" text-anchor="middle" font-size="12" fill="#CFEEE0">state stay with the business — not</text>
+        <text x="400" y="150" text-anchor="middle" font-size="12" fill="#CFEEE0">the individual.</text>
+        <path d="M530 110 H634" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah5)"/>
+
+        <!-- receiving LC -->
+        <circle cx="700" cy="110" r="34" fill="#EAF6EF" stroke="#B8DEC8"/><text x="700" y="118" text-anchor="middle" font-size="22" fill="#0A6B4E">P</text>
+        <text x="700" y="172" text-anchor="middle" font-size="13.5" font-weight="600" fill="#16231E">Reassigned to Priya</text>
+        <text x="700" y="190" text-anchor="middle" font-size="11.5" fill="#6E7B74">with complete thread</text>
+
+        <!-- customer note -->
+        <rect x="772" y="74" width="200" height="72" rx="14" fill="#fff" stroke="#E2DAC8"/>
+        <text x="790" y="102" font-size="13" font-weight="600" fill="#16231E">Customer side</text>
+        <text x="790" y="123" font-size="11.5" fill="#6E7B74">Seamless — same number,</text>
+        <text x="790" y="139" font-size="11.5" fill="#6E7B74">no "please repeat" moment.</text>
+
+        <rect x="100" y="210" width="800" height="0"/>
+        <text x="120" y="226" font-size="12.5" fill="#6E7B74">Pairs with the CRM owner-change trigger (Phase 06) so reassignment in the CRM and in DoubleTick happen together.</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Risk removed:</b> attrition no longer means lost pipeline, broken trust, or a customer starting over with a stranger.</figcaption>
+    </figure>
+
+    <!-- conversation summary -> crm -->
+    <div class="feat" style="margin-top:46px">
+      <div class="ftitle"><span class="ic"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></span><h3>Conversation summary → CRM activity</h3></div>
+      <p>Every WhatsApp conversation is summarised by the AI layer and written straight onto the opportunity's activity timeline — with a suggested next step — so the LC sees full chat context inside the CRM without ever switching tabs.</p>
+    </div>
+    <figure class="figure" data-rise>
+      <div class="fig-title">Sync · Chat → AI summary → opportunity timeline</div>
+      <svg viewBox="0 0 1000 248" role="img" aria-label="Conversation summary to CRM">
+        <defs><marker id="ah6" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9z" fill="#0A6B4E"/></marker></defs>
+        <!-- chat bubbles -->
+        <text x="36" y="34" class="svg-mono" font-size="11.5" letter-spacing="2" fill="#1AA06A" font-weight="600">WHATSAPP CHAT</text>
+        <rect x="30" y="50" width="150" height="30" rx="9" fill="#EAF6EF"/><text x="44" y="70" font-size="12" fill="#0A6B4E">Hi, fees for MBA?</text>
+        <rect x="80" y="90" width="150" height="30" rx="9" fill="#fff" stroke="#E2DAC8"/><text x="94" y="110" font-size="12" fill="#16231E">Sharing details…</text>
+        <rect x="30" y="130" width="178" height="30" rx="9" fill="#EAF6EF"/><text x="44" y="150" font-size="12" fill="#0A6B4E">Can I start in July?</text>
+        <rect x="80" y="170" width="150" height="30" rx="9" fill="#fff" stroke="#E2DAC8"/><text x="94" y="190" font-size="12" fill="#16231E">Yes — let's book.</text>
+        <path d="M238 125 H300" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah6)"/>
+
+        <!-- AI node -->
+        <rect x="306" y="92" width="158" height="66" rx="15" fill="#0A6B4E"/>
+        <text x="385" y="123" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">AI Summary</text>
+        <text x="385" y="143" text-anchor="middle" class="svg-mono" font-size="10" fill="#9BE8C5">GPT layer</text>
+        <path d="M464 125 H526" fill="none" stroke="#0A6B4E" stroke-width="1.6" marker-end="url(#ah6)"/>
+
+        <!-- CRM card -->
+        <rect x="532" y="44" width="438" height="162" rx="16" fill="#fff" stroke="#E2DAC8"/>
+        <text x="554" y="74" font-size="14.5" font-weight="700" fill="#16231E">CRM · Opportunity Timeline</text>
+        <line x1="554" y1="86" x2="948" y2="86" stroke="#E2DAC8"/>
+        <circle cx="562" cy="108" r="4" fill="#1AA06A"/><text x="578" y="112" font-size="12.5" fill="#3A4742"><tspan font-weight="600" fill="#16231E">Summary:</tspan> Asked about MBA fees; wants July start.</text>
+        <circle cx="562" cy="138" r="4" fill="#C9892F"/><text x="578" y="142" font-size="12.5" fill="#3A4742"><tspan font-weight="600" fill="#16231E">Next step:</tspan> Send fee structure + booking link.</text>
+        <circle cx="562" cy="168" r="4" fill="#C25434"/><text x="578" y="172" font-size="12.5" fill="#3A4742"><tspan font-weight="600" fill="#16231E">Sentiment:</tspan> High intent — flag HOT.</text>
+        <rect x="554" y="184" width="280" height="0"/>
+        <text x="36" y="232" font-size="12.5" fill="#6E7B74">LCs and managers get conversation context, next action and sentiment on the record itself — no tab-switching, nothing re-typed.</text>
+      </svg>
+      <figcaption class="fig-cap"><b>Two-way value:</b> the chat layer feeds the CRM (summaries, sentiment, scores) and the CRM drives the chat layer (triggers, ownership, collateral).</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ 05 CRM INTEGRATION ============ -->
+  <section id="crm">
+    <div class="eyebrow">Phase 06 — CRM Integration</div>
+    <h2>Wiring opportunities to conversations</h2>
+    <p class="lead">The integration is driven by two CRM events. Opportunity creation opens the conversation and assigns it to the right LC; opportunity updates keep ownership and messaging in lock-step with the lead's journey.</p>
+
+    <div class="flowhead"><span class="trigger">TRIGGER · OPP CREATED</span></div>
+    <div class="flowhead" style="margin-top:8px"><div><h3>On opportunity creation</h3><p>From assignment to the first WhatsApp message — fully automated.</p></div></div>
+    <div class="flow">
+      <div class="step" data-n="1" data-rise><h5>Opportunity assigned via HiPrLAP</h5><p>A new opportunity is created and routed to a Learning Consultant through our existing HiPrLAP assignment logic.</p></div>
+      <div class="step" data-n="2" data-rise><h5>Chat assigns to the LC in DoubleTick</h5><p>As the opportunity lands with a non-admin user, the corresponding chat in the DoubleTick portal is automatically assigned to that LC.</p></div>
+      <div class="step" data-n="3" data-rise><h5>Webhook fires to DoubleTick</h5><p>A <code>webhook / API</code> call is triggered to DoubleTick carrying the <code>program</code> and <code>university</code> identifier for the opportunity.</p></div>
+      <div class="step" data-n="4" data-rise><h5>Opening WhatsApp message goes out</h5><p>Based on that identifier, DoubleTick triggers the correct opening WhatsApp message — the right tone and collateral for the right program.</p><span class="resolve">First touch automated &amp; on-brand</span></div>
+    </div>
+
+    <div class="flowhead" style="margin-top:48px"><span class="trigger">TRIGGER · OPP UPDATED</span></div>
+    <div class="flowhead" style="margin-top:8px"><div><h3>On opportunity update</h3><p>Stage change, an LC marking an activity, or any opportunity update.</p></div></div>
+    <div class="flow">
+      <div class="step" data-n="1" data-rise><h5>Update event captured</h5><p>Any change to the opportunity — a stage change, a logged activity, or an ownership move — fires the update trigger.</p></div>
+      <div class="step" data-n="2" data-rise><h5>Re-assign chat on owner change</h5><p>If the owner is different from the previous owner, the chat is reassigned to the new owner <strong>along with the full historic conversation</strong>.</p><span class="resolve">Solves lead clashes &amp; context loss on handover</span></div>
+      <div class="step" data-n="3" data-rise><h5>Stage-aware messaging &amp; collateral</h5><p>Based on the same <code>program</code> / <code>university</code> identifier, flows deliver the messaging and collateral relevant to the opportunity's current stage.</p></div>
+    </div>
+  </section>
+
+  <!-- also included -->
+  <section id="also" style="padding-top:54px">
+    <div class="eyebrow">Also included</div>
+    <h2 style="font-size:26px">Other capabilities in the platform</h2>
+    <div class="mini" style="margin-top:18px">
+      <div class="m" data-rise><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 4v16"/></svg></div><h4>Product catalogues</h4><p>Showcase degrees &amp; universities to generic leads, for FMC and degree sales.</p></div>
+      <div class="m" data-rise><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-7-8-3z"/></svg></div><h4>Broadcasts &amp; analytics</h4><p>Targeted broadcasts with delivery/engagement analytics synced back to CRM.</p></div>
+      <div class="m" data-rise><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div><h4>Unified inbox &amp; SLAs</h4><p>Agent permissions, response-time SLAs and conversational analytics per LC.</p></div>
+    </div>
+    <div class="callout" data-rise>
+      <h5>⚠ POC guardrail — plan for these upfront</h5>
+      <p>WhatsApp's 24-hour service window limits free-form messaging; broadcasts need opt-in and affect number quality rating; one customer interested in two programs creates two opps but one thread. Decide these rules before the pilot rather than mid-flight.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="eyebrow" style="margin-bottom:22px">POC — Suggested Next Steps</div>
+    <div class="nextgrid">
+      <div class="next"><div class="n">STEP 01</div><h4>Connect WABA &amp; LCs</h4><p>Onboard one WABA (e.g. HeroEducation) and a pilot set of LC identities.</p></div>
+      <div class="next"><div class="n">STEP 02</div><h4>Wire the two triggers</h4><p>Build Opp Created &amp; Opp Updated webhooks with program/university identifiers.</p></div>
+      <div class="next"><div class="n">STEP 03</div><h4>Pilot, score &amp; measure</h4><p>Run on a single program; track conversion lift, TAT and qualification time.</p></div>
+    </div>
+    <div class="sign">
+      <span><span class="ticks">✔✔</span>&nbsp; WhatsApp × Degree Sales — DoubleTick Integration Plan</span>
+      <span>Internal · Proof of Concept · Leadership Brief</span>
+    </div>
+  </footer>
+
+</div>
+<script>
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.1});
+  document.querySelectorAll('[data-rise]').forEach((el,i)=>{el.style.animationDelay=(i%4*55)+'ms';io.observe(el);});
+</script>
+</body>
+</html>
